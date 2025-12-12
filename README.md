@@ -5,40 +5,51 @@
 </p>
 
 ---
+# ✋ Gesture-Controlled 3D Viewer  
+A real-time 3D interaction system using hand-tracking, MediaPipe, WebSockets, and Three.js.
 
-✨ Gesture-Controlled 3D Viewer
-A real-time 3D interaction system using hand-tracking, MediaPipe, WebSockets, and Three.js
+---
 
-🎯 Overview
-This project demonstrates a real-time system that allows users to interact with a 3D model using hand gestures.
-It uses:
-MediaPipe Hands (Python) → gesture detection
-WebSockets → sends gesture data to browser
-Three.js → renders & controls 3D object
-Custom gestures → zoom, rotate, and more
+## 🎯 Overview  
+This project demonstrates a real-time system that allows users to interact with a 3D model using hand gestures.  
 
-🚀 Features
-✔️ Real-time hand tracking
-✔️ Gesture-based zoom and rotation
-✔️ Lightweight WebSocket communication
-✔️ Three.js 3D rendering
-✔️ Python server (no frameworks required)
-✔️ Works with any webcam
+It uses:  
+- **MediaPipe Hands (Python)** → gesture detection  
+- **WebSockets** → sends gesture data to browser  
+- **Three.js** → renders & controls a 3D cube  
+- **Custom gestures** → zoom, rotation, and more  
 
-📁 Project Structure
-gesture_3d_viewer/
-│── server.py          # Python WebSocket + Mediapipe gesture server
-│── static/
-│   └── index.html     # 3D viewer with Three.js + WebSocket client
-│── Project Report.docx
+---
+
+## 🚀 Features  
+- ✔️ Real-time hand tracking  
+- ✔️ Gesture-based zoom and rotation  
+- ✔️ Lightweight WebSocket communication  
+- ✔️ Three.js 3D rendering  
+- ✔️ Python server (no frameworks required)  
+- ✔️ Works with any webcam  
+
+---
+
+📁 **Project Structure** <br>
+gesture_3d_viewer/ <br>
+│── server.py — Python WebSocket + MediaPipe server <br>
+│── static/ <br>
+│   └── index.html — 3D viewer <br>
+│── assets/ — images used in README <br>
+│── Project Report.docx <br>
 │── venv/ (ignored)
 
-🛠️ Requirements
-Python 3.9+
-pip
-Webcam
-Modern browser
-Three.js (imported via CDN)
+---
+
+## 🔧 Requirements  
+- Python **3.9+**  
+- pip  
+- Webcam  
+- Modern browser  
+- Three.js (loaded via CDN)
+
+---
 
 ▶️ How to Run the Project
 1. Activate virtual environment (optional)
@@ -52,13 +63,14 @@ python server.py
 Navigate in the browser to:
 👉 http://localhost:8080
 
+---
+
 🖐️ Gesture Controls
 Gesture	Action
 Pinch	Zoom in/out
 Index finger pointing	Rotate model
 Hand open	Stop interaction
 
-📷 Demo Screenshots
 ---
 
 ## 📸 Demo & Screenshots
@@ -84,10 +96,30 @@ The Python backend logs camera startup, WebSocket connections, and real-time ges
 
 ---
 
-
-
 📜 License
-MIT License (recommended — will add later)
+MIT License
+
+Copyright (c) 2025 Vedant Bhandare
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
 
 👤 Author
 Vedant Bhandare

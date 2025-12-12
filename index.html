@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gesture-Controlled 3D Viewer — Project Portfolio</title>
+
+<!-- Google font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- Minimal reset + styling -->
+<style>
+  :root{
+    --bg:#0f1113;
+    --card:#0f1720aa; /* translucent dark */
+    --glass: rgba(255,255,255,0.04);
+    --accent:#6EE7B7;
+    --muted:#aab4c0;
+    --glass-border: rgba(255,255,255,0.06);
+    --glass-glow: rgba(110,231,183,0.07);
+    --glass-highlight: rgba(255,255,255,0.02);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background:
+      radial-gradient(1200px 600px at 10% 10%, rgba(110,231,183,0.03), transparent 8%),
+      linear-gradient(180deg,#071018 0%, #0d0f12 100%);
+    color:#e6eef6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:36px;
+  }
+
+  /* wrapper */
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: 1fr 380px;
+    gap:28px;
+    align-items:start;
+  }
+
+  /* header */
+  header{
+    grid-column:1/-1;
+    display:flex;
+    gap:18px;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:4px;
+  }
+  .brand{
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+  .logo{
+    width:52px;height:52px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),#60a5fa);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 20px var(--glass-glow);
+    font-weight:700;color:#052018;font-size:18px;
+  }
+  h1{font-size:20px;margin:0}
+  .tag{color:var(--muted);font-size:13px;margin-top:4px}
+
+  /* main panel */
+  .main-card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border-radius:14px;
+    padding:20px;
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(8px) saturate(120%);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+  }
+
+  /* hero */
+  .hero{
+    display:flex;
+    gap:18px;
+    align-items:flex-start;
+  }
+  .project-meta{
+    flex:1;
+  }
+  .meta-title{font-size:18px;margin:0 0 6px 0}
+  .meta-desc{color:var(--muted);font-size:14px;line-height:1.45;margin-bottom:14px}
+  .badges{display:flex;gap:8px;flex-wrap:wrap}
+  .badge{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+         padding:6px 10px;border-radius:999px;font-size:13px;color:var(--accent);
+         border:1px solid rgba(110,231,183,0.08)
+  }
+
+  /* card with screenshots carousel stack */
+  .preview{
+    width:320px;
+    min-width:220px;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid var(--glass-border);
+  }
+  .preview img{display:block;width:100%;height:auto;object-fit:cover}
+
+  /* features grid */
+  .features{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:16px;
+  }
+  .feat{
+    padding:10px;border-radius:10px;background:var(--glass);
+    border:1px solid var(--glass-border);color:var(--muted);font-size:14px;
+  }
+
+  /* floating action row */
+  .actions{display:flex;gap:10px;margin-top:18px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border:1px solid var(--glass-border);color:var(--accent);font-weight:600;text-decoration:none;
+    font-size:14px;
+  }
+  .btn.primary{
+    background:linear-gradient(90deg,var(--accent),#60a5fa);
+    color:#052018;border:none;box-shadow:0 8px 30px rgba(96,165,250,0.08);
+  }
+
+  /* side column */
+  .side{
+    position:sticky;top:36px;
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .side-card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    padding:14px;border-radius:12px;border:1px solid var(--glass-border);
+  }
+  .side-card h3{margin:0 0 8px 0;font-size:14px}
+  .meta-list{font-size:13px;color:var(--muted);line-height:1.5}
+  .k{color:var(--muted);font-weight:600}
+  .v{color:#e6eef6}
+
+  /* notes / instructions */
+  pre {
+    background:rgba(12,15,18,0.6);
+    padding:10px;border-radius:8px;overflow:auto;border:1px solid rgba(255,255,255,0.02);
+    font-size:13px;color:var(--muted)
+  }
+
+  /* gallery / card deck (floating cards) */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px;
+    margin-top:22px;
+  }
+  .card{
+    position:relative;
+    padding:16px;border-radius:12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid var(--glass-border);
+    transition:transform .28s cubic-bezier(.2,.9,.2,1),box-shadow .28s;
+    overflow:hidden;
+  }
+  .card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(2,8,20,0.6)}
+  .card img{width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px}
+  .card h4{margin:6px 0 6px 0}
+  .card p{margin:0;color:var(--muted);font-size:13px}
+
+  .tags{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .tag-pill{font-size:12px;padding:6px 8px;border-radius:999px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+
+  /* footer */
+  footer{grid-column:1/-1;margin-top:24px;color:var(--muted);font-size:13px;text-align:center}
+
+  /* responsive */
+  @media (max-width:980px){
+    .wrap{grid-template-columns:1fr; padding:20px}
+    .preview{width:100%}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- header -->
+    <header>
+      <div class="brand">
+        <div class="logo">G3</div>
+        <div>
+          <h1>Gesture-Controlled 3D Viewer</h1>
+          <div class="tag">Real-time gesture → WebSockets → Three.js viewer</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a class="btn" href="https://github.com/vedantbhandare/gesture_3d_viewer" target="_blank" rel="noopener">View on GitHub</a>
+        <a class="btn primary" href="static/index.html" target="_blank" rel="noopener">Open Viewer</a>
+      </div>
+    </header>
+
+    <!-- main column -->
+    <section class="main-card">
+      <div class="hero">
+        <!-- project meta -->
+        <div class="project-meta">
+          <div class="meta-title">Overview</div>
+          <div class="meta-desc">
+            A real-time gesture-controlled 3D viewer that uses MediaPipe (Python) for hand tracking, sends gesture data via WebSockets,
+            and renders & controls a Three.js scene in the browser. Supports pinch/zoom, rotation and interactive controls.
+          </div>
+
+          <div class="badges">
+            <div class="badge">Python • MediaPipe</div>
+            <div class="badge">WebSockets</div>
+            <div class="badge">Three.js</div>
+            <div class="badge">Real-time</div>
+          </div>
+
+          <div class="features" style="margin-top:14px">
+            <div class="feat">Real-time hand tracking</div>
+            <div class="feat">Gesture-based zoom & rotate</div>
+            <div class="feat">Lightweight Python server</div>
+            <div class="feat">Works with any webcam</div>
+          </div>
+
+          <div class="actions">
+            <a class="btn primary" href="https://github.com/vedantbhandare/gesture_3d_viewer" target="_blank" rel="noopener">
+              ⤓ Source on GitHub
+            </a>
+            <a class="btn" href="Project%20Report.docx" download>📄 Download Report</a>
+          </div>
+        </div>
+
+        <!-- preview stack -->
+        <div class="preview" title="Project screenshots">
+          <!-- first screenshot; fallback order -->
+          <img src="assets/viewer.png" alt="Viewer screenshot"/>
+        </div>
+      </div>
+
+      <!-- floating card deck (explainers + quick run) -->
+      <div class="cards" style="margin-top:18px">
+        <div class="card">
+          <img src="assets/gestures.png" alt="Hand landmarks"/>
+          <h4>How it works</h4>
+          <p>
+            Capture webcam → MediaPipe detects landmarks (Python) → server sends compact gesture packets via WebSockets → browser updates Three.js scene.
+          </p>
+          <div class="tags">
+            <span class="tag-pill">MediaPipe</span>
+            <span class="tag-pill">WebSockets</span>
+            <span class="tag-pill">Three.js</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="assets/Terminal.png" alt="Server terminal"/>
+          <h4>Server (Python)</h4>
+          <p>
+            Minimal WebSocket server using <code>websockets</code> & MediaPipe. Prints diagnostics and broadcasts gesture frames to clients.
+          </p>
+          <div style="margin-top:10px;color:var(--muted);font-size:13px">Quick run</div>
+          <pre>python -m venv venv
+venv\Scripts\activate
+pip install mediapipe opencv-python websockets
+python server.py</pre>
+        </div>
+
+        <div class="card">
+          <img src="assets/viewer.png" alt="Three.js viewer"/>
+          <h4>Client (Browser)</h4>
+          <p>
+            Single-page Three.js viewer that receives gestures and applies zoom/rotation. Built for low latency & easy debugging.
+          </p>
+          <div class="tags">
+            <span class="tag-pill">ES Module</span>
+            <span class="tag-pill">Orbit Controls</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- side column -->
+    <aside class="side">
+      <div class="side-card">
+        <h3>Project Info</h3>
+        <div class="meta-list">
+          <div><span class="k">Status:</span> <span class="v">Active / demo-ready</span></div>
+          <div><span class="k">Language:</span> <span class="v">Python, HTML/JS</span></div>
+          <div><span class="k">Repo:</span> <span class="v"><a href="https://github.com/vedantbhandare/gesture_3d_viewer" target="_blank" style="color:var(--accent)">github.com/vedantbhandare/gesture_3d_viewer</a></span></div>
+          <div style="height:8px"></div>
+          <div style="color:var(--muted);font-size:13px">Quick links</div>
+          <ul style="margin:8px 0 0 16px;color:var(--muted);font-size:13px">
+            <li><a href="static/index.html" style="color:var(--muted)" target="_blank">Open local viewer (static/index.html)</a></li>
+            <li><a href="Project%20Report.docx" style="color:var(--muted)" download>Download report</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h3>Quick Setup</h3>
+        <div style="color:var(--muted);font-size:13px">
+          1. Create & activate venv<br>
+          2. Install deps: <code>pip install mediapipe opencv-python websockets</code><br>
+          3. Run: <code>python server.py</code><br>
+          4. Open <code>http://localhost:8080</code> in browser
+        </div>
+      </div>
+
+      <div class="side-card" style="display:flex;flex-direction:column;gap:8px;align-items:stretch">
+        <h3>Contact</h3>
+        <div style="color:var(--muted);font-size:13px">Vedant Bhandare — <a style="color:var(--accent)" href="https://github.com/vedantbhandare">GitHub</a></div>
+      </div>
+    </aside>
+
+    <footer>© 2025 — Gesture-Controlled 3D Viewer — Built with MediaPipe, WebSockets and Three.js</footer>
+  </div>
+</body>
+</html>

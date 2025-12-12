@@ -9,6 +9,7 @@
 ✨ Gesture-Controlled 3D Viewer
 A real-time 3D interaction system using hand-tracking, MediaPipe, WebSockets, and Three.js
 
+<p align="center">
 🎯 Overview
 This project demonstrates a real-time system that allows users to interact with a 3D model using hand gestures.
 It uses:
@@ -57,7 +58,7 @@ Gesture	Action
 Pinch	Zoom in/out
 Index finger pointing	Rotate model
 Hand open	Stop interaction
-
+</p>
 📷 Demo Screenshots
 ---
 

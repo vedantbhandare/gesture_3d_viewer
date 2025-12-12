@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Viewer — Gesture Controlled</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #111; color: white; font-family: monospace; }
+        canvas { display: block; }
+        
+        #overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid cyan;
+            pointer-events: none;
+        }
+        .label { color: #aaa; font-size: 14px; }
+        .value { color: cyan; font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block; }
+        #ws-status { color: red; } 
+        #ws-status.connected { color: #0f0; }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div id="overlay">
+        <span class="label">Gesture:</span>
+        <span id="gesture-val" class="value">Waiting...</span>
+
+        <span class="label">Zoom:</span>
+        <span id="zoom-val" class="value">1.00</span>
+
+        <span class="label">Rotate dx/dy:</span>
+        <span id="rotate-val" class="value">0.000 / 0.000</span>
+
+        <span class="label">WS Status:</span>
+        <span id="ws-status" class="value">Disconnected</span>
+    </div>
+
+    <script type="module">
+        // These imports ONLY work if the importmap above is present
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- 1. Setup Scene ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x222222);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshNormalMaterial();
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+
+        // --- 2. WebSocket Connection ---
+        const wsStatusLabel = document.getElementById('ws-status');
+        const gestureVal = document.getElementById('gesture-val');
+        const zoomVal = document.getElementById('zoom-val');
+        const rotateVal = document.getElementById('rotate-val');
+
+        // Connect to the server
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${protocol}//${window.location.host}/ws`;
+        const ws = new WebSocket(wsUrl);
+
+        ws.onopen = () => {
+            console.log("WebSocket Connected!");
+            wsStatusLabel.textContent = "Connected";
+            wsStatusLabel.classList.add("connected");
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            
+            gestureVal.textContent = data.gesture;
+            zoomVal.textContent = data.zoom;
+            rotateVal.textContent = `${data.rx} / ${data.ry}`;
+
+            if (data.gesture === "Tracking") {
+                // Smoothly interpolate rotation and scale
+                cube.rotation.x = THREE.MathUtils.lerp(cube.rotation.x, data.rx, 0.1);
+                cube.rotation.y = THREE.MathUtils.lerp(cube.rotation.y, data.ry, 0.1);
+                
+                const targetScale = data.zoom;
+                cube.scale.setScalar(THREE.MathUtils.lerp(cube.scale.x, targetScale, 0.1));
+            }
+        };
+
+        ws.onclose = () => {
+            wsStatusLabel.textContent = "Disconnected";
+            wsStatusLabel.classList.remove("connected");
+        };
+
+        // --- 3. Animation Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

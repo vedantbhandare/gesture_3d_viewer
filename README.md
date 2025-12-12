@@ -1,12 +1,8 @@
-<h1 align="center">Gesture-Controlled 3D Viewer</h1>
+<h1 align="center">✋ Gesture-Controlled 3D Viewer</h1>
 
 <p align="center">
   Real-time 3D interaction using MediaPipe, WebSockets, and Three.js
 </p>
-
----
-# ✋ Gesture-Controlled 3D Viewer  
-A real-time 3D interaction system using hand-tracking, MediaPipe, WebSockets, and Three.js.
 
 ---
 

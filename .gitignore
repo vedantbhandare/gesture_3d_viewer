@@ -1,0 +1,28 @@
+# Ignore Python virtual environments
+venv/
+ENV/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE configs
+.vscode/
+.idea/
+
+# OS-generated files
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Ignore project report if you want (optional)
+Project Report.docx

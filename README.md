@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="assets/viewer.png" width="800" alt="Project Banner">
-</p>
-
 <h1 align="center">Gesture-Controlled 3D Viewer</h1>
 
 <p align="center">

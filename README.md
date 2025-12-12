@@ -51,7 +51,32 @@ Index finger pointing	Rotate model
 Hand open	Stop interaction
 
 📷 Demo Screenshots
-(Add 2–3 screenshots here later)
+---
+
+## 📸 Demo & Screenshots
+
+### 🖥️ 3D Viewer Interface  
+This is the main Three.js viewer where gestures control zoom and rotation.
+
+<img src="assets/viewer.png" width="700"/>
+
+---
+
+### ✋ Real-Time Gesture Detection (MediaPipe)  
+The Python server tracks hand landmarks, detects pinch & rotation, and sends gestures to the browser via WebSockets.
+
+<img src="assets/gestures.png" width="700"/>
+
+---
+
+### 🧪 WebSocket + Server Output  
+The Python backend logs camera startup, WebSocket connections, and real-time gesture events.
+
+<img src="assets/Terminal.png" width="700"/>
+
+---
+
+
 
 📜 License
 MIT License (recommended — will add later)
